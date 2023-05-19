@@ -1,0 +1,8 @@
+import geopandas as gpd
+import matplotlib.pyplot as plt
+# Load the Natural Earth dataset
+world = gpd.read_file('/Users/ud/Downloads/110m_cultural')
+
+world.plot()
+
+plt.show()
