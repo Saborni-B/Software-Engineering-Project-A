@@ -1,30 +1,21 @@
+from sentinelsat import SentinelAPI, read_geojson, geojson_to_wkt
+from datetime import datetime
+
 import geopandas as gpd
-import matplotlib.pyplot as plt
-from sentinelsat import SentinelAPI
+from shapely.geometry import mapping
 
-username = "s5pguest"
-pwd = "s5pguest"
-api_url = "https://s5phub.copernicus.eu/dhus"
+api = SentinelAPI('s5pguest', 's5pguest', 'https://s5phub.copernicus.eu/dhus')
+product_type = 'L2__CH4___'
 
-api = SentinelAPI(username, pwd, api_url, show_progressbars=True, timeout=60)
+# Load the GeoJSON file of Australia
+countries_geojson_file = '/Users/ud/Downloads/ne_110m_admin_0_countries/ne_110m_admin_0_countries.shp'
+countries_gdf = gpd.read_file(countries_geojson_file)
 
-# Load the world dataset from geopandas
-world = gpd.read_file(gpd.datasets.get_path('naturalearth_lowres'))
+australia_gdf = countries_gdf[countries_gdf['ADMIN'] == 'Australia']
+australia_geometry = australia_gdf.geometry.iloc[0]
+geometry_dict = mapping(australia_geometry)
+geometry_wkt = geojson_to_wkt(geometry_dict)
 
-# Australia polygon
-australia = world[world['name'] == 'Australia']
-australia_geom = australia.geometry.values[0]
+date_range = (datetime(2022, 3, 1), datetime(2022, 4, 20))
 
-# Query Sentinel-5P data Australia
-products = api.query(australia_geom, date=('20201216', '20230317'), platformname='Sentinel-5P', producttype='L2__CH4___')
-
-api.download_all(products, '/Users/ud/Documents')
-
-methane_data = gpd.read_file('/Users/ud/Documents')
-
-world.plot()
-
-methane_data.plot(ax=plt.gca(), color='red')
-
-
-plt.show()
+products = api.query(geometry=geometry_wkt, date=date_range, producttype=product_type)
