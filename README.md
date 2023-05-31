@@ -14,5 +14,4 @@ NOTE: python 3.9 and above is required. Please install it if you don't have it.
 
 ## How to run the pipeline
 
-1. Open CMD
-2. Run the command "py -m jupyter notebook prototype.ipynb"
+1. In the same directory, run the command "py -m jupyter notebook prototype.ipynb" 
