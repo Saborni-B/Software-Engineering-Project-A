@@ -14,4 +14,4 @@ NOTE: python 3.9 and above is required. Please install it if you don't have it.
 
 ## How to run the pipeline
 
-1. In the same directory, run the command "py -m jupyter notebook extracts5o.ipynb" 
+1. In the same directory, run the command "py -m jupyter notebook extracts5p.ipynb" 
