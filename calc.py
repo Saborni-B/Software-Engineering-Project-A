@@ -15,23 +15,4 @@ def divide(x, y):
     if y == 0:
         raise ValueError('Can not divide by zero')
     return x / y
-
-
-#Testing the add function
-#print(add(10, 5))
-#Testing the divide (ValueError)
-#print(divide(2, 0))
-
-
-#import unittest
-#import calc
-
-#class TestCalc(unittest.TestCase):
-    
- #   def test_add(self):
-  #      result = calc.add(10, 5)
-   #     self.assertEqual(result, 15)
-        
-      
-#if __name__ == '__main__':
- #   unittest.main()
+#x//y does not raise an error when 'y' is equal to 0 because integer division'//' in Python handles division by zero differently than regular division'/'
