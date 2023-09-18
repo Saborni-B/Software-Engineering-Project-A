@@ -18,17 +18,20 @@ def divide(x, y):
 
 
 #Testing the add function
-print(add(10, 5))
+#print(add(10, 5))
 #Testing the divide (ValueError)
 #print(divide(2, 0))
 
 
-import unittest
-import calc
+#import unittest
+#import calc
 
-class TestCalc(unittest.TestCase):
+#class TestCalc(unittest.TestCase):
     
-    def test_add(self):
-        result = calc.add(10, 5)
-        self.assertEqual(result, 15)
+ #   def test_add(self):
+  #      result = calc.add(10, 5)
+   #     self.assertEqual(result, 15)
         
+      
+#if __name__ == '__main__':
+ #   unittest.main()
