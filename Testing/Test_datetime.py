@@ -1,6 +1,7 @@
 from datetime import datetime
 import unittest
 
+# Function to convert date format 
 def convert_format_date(input_date):
     correct_formats = ["%d %m %Y", "%Y %m %d", "%d/%m/%Y", "%Y/%m/%d", "%d-%m-%Y", "%Y-%m-%d"]
     
@@ -47,7 +48,6 @@ class TestConvertFormatDate(unittest.TestCase):
         with self.assertRaises(ValueError):
             convert_format_date("21 31 12")  
 
-            
     #Invalid date components        
     def test_invalid_date_components(self):
             # Invalid month (13)
