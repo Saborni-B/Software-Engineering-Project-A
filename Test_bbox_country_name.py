@@ -1,6 +1,5 @@
 from datetime import datetime
 import json
-#import geopandas as gpd
 import unittest
 
 def search_catalog(Region, date_period):
@@ -23,13 +22,13 @@ def search_catalog(Region, date_period):
         else:
             raise ValueError("Invalid coordinates in bbox")   
     else:
-        world = gpd.read_file(gpd.datasets.get_path('naturalearth_lowres'))
-        ROI = world[world["name"] == Region]
-        gjson = json.loads(ROI.to_json())
-        coordinates = gjson["features"][0]["geometry"]["coordinates"]
+        #world = gpd.read_file(gpd.datasets.get_path('naturalearth_lowres'))
+        #ROI = world[world["name"] == Region]
+        #gjson = json.loads(ROI.to_json())
+        #coordinates = gjson["features"][0]["geometry"]["coordinates"]
         
         #Assum 
-        #coordinates = [174.563615, -36.893762, 174.860246, -36.717901] #Auckland NZ
+        coordinates = [174.563615, -36.893762, 174.860246, -36.717901] #Auckland NZ
 
         if not isinstance(coordinates, list): 
             coordinates = [coordinates]    
@@ -38,6 +37,8 @@ def search_catalog(Region, date_period):
             "coordinates": coordinates
         }   
     return search_parameters
+    result = search_catalog(Region=Region, date_period=date_period)
+
 
 class TestBboxAndCountryName(unittest.TestCase):
     
@@ -72,12 +73,16 @@ class TestBboxAndCountryName(unittest.TestCase):
     #Testing valid country name
     def test_valid_country_name(self):
         Region = "Japan"
-        date_period = "2022-10-01/2011-10-30"
+        date_period = "2022-10-01/2022-10-30"
         result = search_catalog(Region, date_period)
         self.assertEqual(result["intersects"]["type"], "MultiPolygon")
-        
-    #def Test_invalid_country_name(self):
-
+    
+    #Testing invalid country name    
+    def Test_invalid_country_name(self):
+        Region = "111"
+        date_period = "2022-10-01/2022-10-30"
+        with self.assertRaises(ValueError):
+            search_catalog(result["intersects"]["type"], "MultiPolygon")
 
 if __name__ == '__main__':
     unittest.main()
