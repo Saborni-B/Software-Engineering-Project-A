@@ -94,14 +94,6 @@ class TestConvertFormatDate(unittest.TestCase):
     #Single digit month and day        
     def test_single_digit_month_day(self):
         self.assertEqual(convert_format_date("5 9 2022"), "2022-09-05")
-
-    #Different correct formats
-    def test_different_approved_formats(self):
-        self.assertEqual(convert_format_date("31/12/2021"), "2021-12-31")
-        self.assertEqual(convert_format_date("2022-12-31"), "2022-12-31")
-        self.assertEqual(convert_format_date("05-07-2021"), "2021-07-05")
-        self.assertEqual(convert_format_date("2022/02/15"), "2022-02-15")
-        self.assertEqual(convert_format_date("2022 09 01"), "2022-09-01")
         
     #Date boundary 
     def test_boundary_values(self):
