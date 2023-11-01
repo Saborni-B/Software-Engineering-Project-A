@@ -27,7 +27,12 @@ def search_catalog(region, date_period):
             raise ValueError("Invalid coordinates in bbox")
     else:
         world = gpd.read_file(gpd.datasets.get_path('naturalearth_lowres'))
+
         ROI = world[world["name"] == region]
+
+        if ROI.empty:
+            raise ValueError("Invalid country name")
+
         gjson = json.loads(ROI.to_json())
         coordinates = gjson["features"][0]["geometry"]["coordinates"]
 
@@ -79,11 +84,11 @@ class TestBboxAndCountryName(unittest.TestCase):
         self.assertEqual(result["intersects"]["type"], "MultiPolygon")
 
     # Testing invalid country name
-    def Test_invalid_country_name(self):
+    def test_invalid_country_name(self):
         region = "111"
         date_period = "2022-10-01/2022-10-30"
         with self.assertRaises(ValueError):
-            search_catalog(result["intersects"]["type"], "MultiPolygon")
+            search_catalog(region, date_period)
 
 
 if __name__ == '__main__':
