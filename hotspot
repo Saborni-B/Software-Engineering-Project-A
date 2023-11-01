@@ -1,0 +1,38 @@
+square_size = 20000  
+hotspot_size = 5000  
+hotspot_threshold = 1950
+
+min_lon = lon.min()
+max_lon = lon.max()
+min_lat = lat.min()
+max_lat = lat.max()
+
+for lon_start in np.arange(min_lon, max_lon, square_size):
+    for lat_start in np.arange(min_lat, max_lat, square_size):
+        lon_end = lon_start + square_size
+        lat_end = lat_start + square_size
+        
+        lon_start = max(min_lon, lon_start)
+        lon_end = min(max_lon, lon_end)
+        lat_start = max(min_lat, lat_start)
+        lat_end = min(max_lat, lat_end)
+        
+        square_mask = (lon >= lon_start) & (lon <= lon_end) & (lat >= lat_start) & (lat <= lat_end)
+        square_methane = methane[square_mask]
+        
+        if square_methane.size > 0:
+            max_concentration = square_methane.max()
+                
+            if max_concentration >= hotspot_threshold:
+                hotspot_lon = (lon_start + lon_end) / 2
+                hotspot_lat = (lat_start + lat_end) / 2
+                hotspot_locations.append((hotspot_lon, hotspot_lat))
+                
+hotspots_gdf = gpd.GeoDataFrame(geometry=gpd.points_from_xy([lon for lon, lat in hotspot_locations],[lat for lon, lat in hotspot_locations]), crs="EPSG:4326")
+
+fig, ax = plt.subplots(1, 1, figsize=(12, 8), subplot_kw={'projection': ccrs.PlateCarree()})
+continent_borders.boundary.plot(ax=ax, linewidth=1, color='black')
+hotspots_gdf.plot(ax=ax, markersize=10, color='red', label="Methane Hotspots")
+plt.title("Methane Hotspots within 20 km Squares")
+plt.legend()
+plt.show()
